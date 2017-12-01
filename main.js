@@ -1,85 +1,85 @@
 var SubmitField = React.createClass({
-	handleSubmit: function(event){
+    handleSubmit: function(event){
         React.findDOMNode(this.refs.textField).focus();
-		this.props.submitItem();
-		event.preventDefault();
+        this.props.submitItem();
+        event.preventDefault();
     },
     render: function(){
         return(
             <div>
-				<form onSubmit={this.handleSubmit}>
-					<input type="text" ref="textField" value={this.props.text} onChange={this.props.handleChange}/>
-					<input type="submit" value="Add"/>
-				</form>
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" ref="textField" value={this.props.text} onChange={this.props.handleChange}/>
+                    <input type="submit" value="Add"/>
+                </form>
             </div>
         );
     },
 });
 
 var TodoList = React.createClass({
-	render: function(){
-		var parent = this;
-		var todos = this.props.todos.map(function(todo,index){
+    render: function(){
+        var parent = this;
+        var todos = this.props.todos.map(function(todo,index){
             return(
-				<li key={index}>
-					<span onClick={parent.props.handleDelete.bind(null, index)}>
-						{todo}
-					</span>
-				</li>
-			);
+                <li key={index}>
+                    <span onClick={parent.props.handleDelete.bind(null, index)}>
+                        {todo}
+                    </span>
+                </li>
+            );
         });   
-		return(
-			<ul>
+        return(
+            <ul>
                 {todos}
             </ul>
-		);
-	},
+        );
+    },
 });
 
 var TodoApp = React.createClass({
-	getInitialState: function(){
+    getInitialState: function(){
         return {
-			text: '',
+            text: '',
             todos: ["get food","drive home","eat food", "sleep"],
-			completed: []
+            completed: []
         }
     },
-	handleChange: function(event){
-		this.setState({text: event.target.value});
-	},
-	submitItem: function(event){
-		this.setState({
-			todos: this.state.todos.concat([this.state.text]),
-			text: ''
-		});
-	},
-	handleDelete: function(index){
-		var newTodos = this.state.todos.slice();
-		var item = newTodos.splice(index, 1);
-		this.setState({
-			todos: newTodos,
-			completed: this.state.completed.concat([item])
-		});
-	},
-	handleUndo: function(index){
-		var newCompleted = this.state.completed.slice();
-		var item = newCompleted.splice(index, 1);
-		this.setState({
-			completed: newCompleted,
-			todos: this.state.todos.concat([item])
-		});
-	},
+    handleChange: function(event){
+        this.setState({text: event.target.value});
+    },
+    submitItem: function(event){
+        this.setState({
+            todos: this.state.todos.concat([this.state.text]),
+            text: ''
+        });
+    },
+    handleDelete: function(index){
+        var newTodos = this.state.todos.slice();
+        var item = newTodos.splice(index, 1);
+        this.setState({
+            todos: newTodos,
+            completed: this.state.completed.concat([item])
+        });
+    },
+    handleUndo: function(index){
+        var newCompleted = this.state.completed.slice();
+        var item = newCompleted.splice(index, 1);
+        this.setState({
+            completed: newCompleted,
+            todos: this.state.todos.concat([item])
+        });
+    },
     render: function(){
         return(
-			<div>
-				<h2>Todo List</h2>
-				<p>Click items in Todo List to remove. Click items in Completed Tasks to undo remove</p>
-				<SubmitField text={this.state.text} handleChange={this.handleChange} submitItem={this.submitItem} />
-				<TodoList todos={this.state.todos} handleDelete={this.handleDelete}/>
-				<h3>Completed Tasks</h3>
-				<TodoList todos={this.state.completed} handleDelete={this.handleUndo}/>
-			</div>
-		);
+            <div>
+                <h2>Todo List</h2>
+                <p>Click items in Todo List to remove. Click items in Completed Tasks to undo remove</p>
+                <SubmitField text={this.state.text} handleChange={this.handleChange} submitItem={this.submitItem} />
+                <TodoList todos={this.state.todos} handleDelete={this.handleDelete}/>
+                <h3>Completed Tasks</h3>
+                <TodoList todos={this.state.completed} handleDelete={this.handleUndo}/>
+            </div>
+        );
     },
 });
 React.render(<TodoApp />, document.getElementById('content'));
