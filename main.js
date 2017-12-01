@@ -16,18 +16,23 @@ var SubmitField = React.createClass({
     },
 });
 
+var itemStyle = {
+    cursor:'pointer',
+    backgroundColor:'LightCyan'
+};
+
 var TodoList = React.createClass({
     render: function(){
         var parent = this;
         var todos = this.props.todos.map(function(todo,index){
             return(
                 <li key={index}>
-                    <span onClick={parent.props.handleDelete.bind(null, index)}>
+                    <span style={itemStyle} onClick={parent.props.handleDelete.bind(null, index)}>
                         {todo}
                     </span>
                 </li>
             );
-        });   
+        });
         return(
             <ul>
                 {todos}
@@ -35,6 +40,10 @@ var TodoList = React.createClass({
         );
     },
 });
+
+var fontStyle = {
+    fontFamily: "Palatino Linotype"
+};
 
 var TodoApp = React.createClass({
     getInitialState: function(){
@@ -71,9 +80,9 @@ var TodoApp = React.createClass({
     },
     render: function(){
         return(
-            <div>
+            <div style={fontStyle}>
                 <h2>Todo List</h2>
-                <p>Click items in Todo List to remove. Click items in Completed Tasks to undo remove</p>
+                <p>Click items in Todo List to remove. Click items in Completed Tasks to undo remove. </p>
                 <SubmitField text={this.state.text} handleChange={this.handleChange} submitItem={this.submitItem} />
                 <TodoList todos={this.state.todos} handleDelete={this.handleDelete}/>
                 <h3>Completed Tasks</h3>
